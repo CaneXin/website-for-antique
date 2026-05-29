@@ -1113,7 +1113,7 @@ export default function App() {
           boxSizing: 'border-box',
           paddingLeft: '24px',
           paddingRight: '24px',
-          overflowY: isDeepDive ? 'auto' : 'hidden',
+          overflowY: (scrollProgress > 0.85 || isDeepDive) ? 'auto' : 'hidden',
           paddingBottom: '80px',
         }}>
           {/* Main Scrolled Down Header */}
