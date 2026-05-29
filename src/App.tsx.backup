@@ -1,0 +1,824 @@
+import React, { useState, useEffect } from 'react';
+
+// ==========================================
+// IMAGE ASSETS (Exact URLs from USER_REQUEST)
+// ==========================================
+const WORLD_BG = "/WORLD_BG.png";
+const CURTAIN_LEFT = "/curtain_left.png";
+const CURTAIN_RIGHT = "/curtain_right.png";
+const TREE_MIDDLE = "/tree.png";
+
+const CARD_IMAGES = [
+  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_202601469-484f-af25-59168ad9a233.png&w=1280&q=85",
+  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260a101-4ded-a332-7d37707dbdd1.png&w=1280&q=85",
+  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_202600dfb-4ac9-a4ef-e74f301c329c.png&w=1280&q=85"
+];
+
+// ==========================================
+// SCENE 2 CARD DATA (9 cards)
+// ==========================================
+const SCENE2_CARDS = [
+  { title: 'Hidden Realms', desc: 'Luminous sanctuaries unseen by wandering eyes', color: '#f3cdd6' },
+  { title: 'Wild Solitudes', desc: 'Dissolve into untamed horizons and deep calm', color: '#dcedc2' },
+  { title: 'Silent Havens', desc: 'Remote escapes far beyond ordinary reach', color: '#c3e3f4' },
+  { title: 'Bespoke Quests', desc: 'Journeys shaped around your vision and soul', color: '#f0e4c0' },
+  { title: 'Vivid Drifts', desc: 'Surreal passages through breathtaking terrain', color: '#dcd2f2' },
+  { title: 'Mystic Crests', desc: 'Timeless ridgelines wrapped in cloud and myth', color: '#f3cdd6' },
+  { title: 'Deep Currents', desc: 'Glowing depths alive with uncharted wonder', color: '#c3e3f4' },
+  { title: 'Gilded Dusk', desc: 'Amber horizons that stretch past all reason', color: '#f0e4c0' },
+  { title: 'Glassy Tides', desc: 'Calm waters holding skies of pure stillness', color: '#dcedc2' }
+];
+
+// ==========================================
+// HELPER MATH FUNCTIONS
+// ==========================================
+const easeInOut = (t: number): number => {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+};
+
+const lerp = (a: number, b: number, t: number): number => {
+  return a + (b - a) * t;
+};
+
+const clamp = (val: number, min: number, max: number): number => {
+  return Math.max(min, Math.min(max, val));
+};
+
+// ==========================================
+// CUSTOM HOOKS
+// ==========================================
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const listener = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(media.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, []);
+
+  return isMobile;
+}
+
+// ==========================================
+// INLINE COMPONENTS
+// ==========================================
+
+const StarLogo: React.FC = () => (
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <path d="M14 2l2.09 6.42H23l-5.45 3.96 2.09 6.42L14 14.84l-5.64 4.06 2.09-6.42L4.96 8.42h6.95L14 2z" fill="white" opacity="0.9" />
+    <circle cx="14" cy="24" r="1.5" fill="white" opacity="0.6" />
+    <circle cx="6" cy="6" r="1" fill="white" opacity="0.4" />
+    <circle cx="22" cy="6" r="1" fill="white" opacity="0.4" />
+  </svg>
+);
+
+interface Scene1CardProps {
+  bgImage: string;
+  isPlayCard?: boolean;
+  numberText?: string;
+  labelText: string;
+  isMobile?: boolean;
+  isDesktop?: boolean;
+}
+
+const Scene1Card: React.FC<Scene1CardProps> = ({
+  bgImage,
+  isPlayCard,
+  numberText,
+  labelText,
+  isMobile,
+  isDesktop,
+}) => {
+  const size = isDesktop ? 158 : 140;
+  const radius = isDesktop ? 28 : 22;
+  const padding = isDesktop ? 12 : 10;
+
+  return (
+    <div style={{
+      width: `${size}px`,
+      height: `${size}px`,
+      borderRadius: `${radius}px`,
+      backgroundImage: `url(${bgImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.45)',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      {/* Bottom gradient overlay */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '60%',
+        background: 'linear-gradient(to top, rgba(10, 6, 8, 0.95) 0%, rgba(10, 6, 8, 0.4) 60%, transparent 100%)',
+        zIndex: 1,
+      }} />
+
+      {/* Backdrop blur layer */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '44%',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        background: 'linear-gradient(to top, rgba(10, 6, 8, 0.6) 0%, rgba(10, 6, 8, 0.15) 100%)',
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+        zIndex: 2,
+      }} />
+
+      {/* Content Area */}
+      <div style={{
+        position: 'absolute',
+        bottom: `${padding}px`,
+        left: `${padding}px`,
+        right: `${padding}px`,
+        zIndex: 3,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: '4px',
+        textAlign: 'left',
+      }}>
+        {isPlayCard ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? '8px' : '6px' }}>
+            <div style={{
+              width: isDesktop ? '30px' : '26px',
+              height: isDesktop ? '30px' : '26px',
+              borderRadius: '50%',
+              backgroundColor: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+            }}>
+              <svg width={isDesktop ? "10" : "8"} height={isDesktop ? "12" : "10"} viewBox="0 0 10 12" fill="none" style={{ marginLeft: '2px' }}>
+                <path d="M2.5 2L8.5 6L2.5 10V2Z" fill="#0a0608" />
+              </svg>
+            </div>
+            <span style={{
+              color: '#ffffff',
+              fontSize: isDesktop ? '18px' : (isMobile ? '13px' : '14px'),
+              fontFamily: 'Imprima, sans-serif',
+              fontWeight: 500,
+            }}>
+              {labelText}
+            </span>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0px' }}>
+            <span style={{
+              color: '#ffffff',
+              fontSize: isDesktop ? '36px' : '28px',
+              fontFamily: 'Viaoda Libre, serif',
+              lineHeight: 1,
+            }}>
+              {numberText}
+            </span>
+            <span style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: isDesktop ? '18px' : '14px',
+              fontFamily: 'Imprima, sans-serif',
+              lineHeight: 1.1,
+            }}>
+              {labelText}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+interface ArcCardSliderProps {
+  cards: typeof SCENE2_CARDS;
+  rotationOffset: number;
+  isMobile: boolean;
+}
+
+const ArcCardSlider: React.FC<ArcCardSliderProps> = ({ cards, rotationOffset, isMobile }) => {
+  const cardSpacingDeg = isMobile ? 12 : 9;
+  const centerIndex = Math.floor(cards.length / 2);
+  const arcRadius = isMobile ? 700 : 1100;
+  const cardW = isMobile ? 160 : 220;
+  const cardH = isMobile ? 175 : 230;
+  const halfW = cardW / 2;
+  const bottomOffset = isMobile ? 140 : 200;
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'visible' }}>
+      {cards.map((card, i) => {
+        const baseDeg = (i - centerIndex) * cardSpacingDeg;
+        const deg = baseDeg - rotationOffset + (centerIndex * cardSpacingDeg);
+        const rad = (deg * Math.PI) / 180;
+        const x = Math.sin(rad) * arcRadius;
+        const y = arcRadius - Math.cos(rad) * arcRadius;
+
+        const paddedIndex = String(i + 1).padStart(2, '0');
+
+        return (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              bottom: `${-y + bottomOffset}px`,
+              left: `calc(50% + ${x}px - ${halfW}px)`,
+              width: `${cardW}px`,
+              height: `${cardH}px`,
+              transform: `rotate(${deg}deg)`,
+              transformOrigin: `${halfW}px ${arcRadius}px`,
+              borderRadius: isMobile ? '18px' : '26px',
+              backgroundColor: card.color,
+              boxShadow: '0 8px 40px rgba(80,40,60,0.18)',
+              padding: isMobile ? '16px' : '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              boxSizing: 'border-box',
+              cursor: 'pointer',
+              userSelect: 'none',
+            }}
+          >
+            {/* Number Indicator Top Right */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+              <div style={{
+                width: '24px',
+                height: '24px',
+                borderRadius: '50%',
+                border: '1.5px solid rgba(80,50,60,0.3)',
+                color: 'rgba(80,50,60,0.6)',
+                fontFamily: 'Imprima, sans-serif',
+                fontSize: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                {paddedIndex}
+              </div>
+            </div>
+
+            {/* Bottom text */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '4px' : '8px', textAlign: 'left' }}>
+              <h3 style={{
+                fontFamily: 'Viaoda Libre, serif',
+                fontSize: isMobile ? '22px' : '30px',
+                color: '#3a2530',
+                lineHeight: 1.1,
+              }}>
+                {card.title}
+              </h3>
+              <p style={{
+                fontFamily: 'Imprima, sans-serif',
+                fontSize: isMobile ? '12px' : '15px',
+                color: 'rgba(58,37,48,0.65)',
+                lineHeight: 1.3,
+              }}>
+                {card.desc}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// ==========================================
+// MAIN COMPONENT
+// ==========================================
+export default function App() {
+  const isMobile = useIsMobile();
+
+  // Scroll driven progress (0 to 1)
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Mouse positions (smoothed via requestAnimationFrame)
+  const [smoothedMouse, setSmoothedMouse] = useState({ x: 0, y: 0 });
+
+  // Entrance state managers
+  const [uiVisible, setUiVisible] = useState(false);
+
+  useEffect(() => {
+    // 1. Scroll listener
+    const handleScroll = () => {
+      const docHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const winHeight = window.innerHeight;
+      const scrolled = window.scrollY;
+      const maxScroll = docHeight - winHeight;
+      const progress = maxScroll > 0 ? scrolled / maxScroll : 0;
+      setScrollProgress(Math.max(0, Math.min(1, progress)));
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    // 2. Mouse tracking with smoothing loop
+    let rawX = 0;
+    let rawY = 0;
+    const handleMouseMove = (e: MouseEvent) => {
+      rawX = (e.clientX / window.innerWidth) * 2 - 1;
+      rawY = (e.clientY / window.innerHeight) * 2 - 1;
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    let currentX = 0;
+    let currentY = 0;
+    let animId: number;
+
+    const smoothUpdate = () => {
+      currentX = lerp(currentX, rawX, 0.07);
+      currentY = lerp(currentY, rawY, 0.07);
+      setSmoothedMouse({ x: currentX, y: currentY });
+      animId = requestAnimationFrame(smoothUpdate);
+    };
+    animId = requestAnimationFrame(smoothUpdate);
+
+    // 3. Staggered entrance sequences
+    const tUi = setTimeout(() => setUiVisible(true), 600);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animId);
+      clearTimeout(tUi);
+    };
+  }, []);
+
+  // Parallax calculations
+  const ep = easeInOut(scrollProgress);
+
+  // Curtain translation progress (fully open by scrollProgress = 0.45)
+  const curtainProgress = clamp(scrollProgress / 0.45, 0, 1);
+  const ec = easeInOut(curtainProgress);
+
+  // Scene transitions
+  const scene1Opacity = clamp(1 - scrollProgress / 0.22, 0, 1);
+  const scene2Opacity = clamp((scrollProgress - 0.68) / 0.16, 0, 1);
+
+  // Arc card slider rotation calculations
+  const arcSweepDeg = (SCENE2_CARDS.length - 1) * 10;
+  const rotationOffset = lerp(0, arcSweepDeg, clamp((scrollProgress - 0.70) / 0.30, 0, 1));
+
+  // Mouse Magnitudes
+  const MAG = {
+    world: 6,
+    tree: 8,
+    curtainL: 14,
+    curtainR: 14,
+  };
+
+  // Layers transform strings
+  const worldTransform = `scale(${lerp(1, 1.18, ep)}) translate(${ -smoothedMouse.x * MAG.world }px, ${ -smoothedMouse.y * MAG.world }px)`;
+  const treeTransform = `scale(${lerp(1, 1.25, ep)}) translate(${ -smoothedMouse.x * MAG.tree }px, ${ -smoothedMouse.y * MAG.tree }px)`;
+  const curtainLTransform = `translateX(calc(0% - ${lerp(0, 140, ec)}%)) translateX(${ -smoothedMouse.x * MAG.curtainL }px) translateY(${ -smoothedMouse.y * MAG.curtainL * 0.3 }px) scale(${lerp(1, 1.3, ec)})`;
+  const curtainRTransform = `translateX(calc(0% + ${lerp(0, 140, ec)}%)) translateX(${ -smoothedMouse.x * MAG.curtainR }px) translateY(${ -smoothedMouse.y * MAG.curtainR * 0.3 }px) scale(${lerp(1, 1.3, ec)})`;
+
+  return (
+    <div style={{ height: '480vh', position: 'relative', width: '100%' }}>
+      {/* Sticky Viewport */}
+      <div style={{
+        position: 'sticky',
+        top: 0,
+        height: '100vh',
+        width: '100%',
+        overflow: 'hidden',
+        backgroundColor: '#0a0608',
+      }}>
+
+        {/* ==========================================
+            LAYER 1: World Background (z-index: 0)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          transformOrigin: '50% 50%',
+          transform: worldTransform,
+          zIndex: 0,
+        }}>
+          <img
+            src={WORLD_BG}
+            alt="World Background"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+
+        {/* ==========================================
+            LAYER 2: Middle-ground Tree (z-index: 5)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          bottom: '-5vh',
+          left: 0,
+          width: '100%',
+          height: '105vh',
+          transformOrigin: '0% 100%',
+          transform: treeTransform,
+          zIndex: 5,
+          pointerEvents: 'none',
+        }}>
+          <img
+            src={TREE_MIDDLE}
+            alt="Middle ground tree"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'left bottom' }}
+          />
+        </div>
+
+        {/* ==========================================
+            LAYER 2.5: Arc Card Slider (z-index: 9)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: isMobile ? '60px' : '80px',
+          height: isMobile ? '260px' : '360px',
+          zIndex: 9,
+          opacity: scene2Opacity,
+          pointerEvents: scene2Opacity > 0.1 ? 'auto' : 'none',
+          overflow: 'visible',
+        }}>
+          <ArcCardSlider cards={SCENE2_CARDS} rotationOffset={rotationOffset} isMobile={isMobile} />
+        </div>
+
+        {/* ==========================================
+            LAYER 3.5: Bottom Fade Gradient (z-index: 16)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '40%',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 16,
+        }} />
+
+        {/* ==========================================
+            LAYER 4L: Curtain Left (z-index: 16)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '108vh',
+          transformOrigin: 'left center',
+          transform: curtainLTransform,
+          zIndex: 16,
+          pointerEvents: 'none',
+        }}>
+          <img
+            src={CURTAIN_LEFT}
+            alt="Curtain Left"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'right center' }}
+          />
+        </div>
+
+        {/* ==========================================
+            LAYER 4R: Curtain Right (z-index: 16)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '108vh',
+          transformOrigin: 'right center',
+          transform: curtainRTransform,
+          zIndex: 16,
+          pointerEvents: 'none',
+        }}>
+          <img
+            src={CURTAIN_RIGHT}
+            alt="Curtain Right"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'left center' }}
+          />
+        </div>
+
+        {/* ==========================================
+            TOP FADE GRADIENT (z-index: 45)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '42vh',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 45,
+        }} />
+
+        {/* ==========================================
+            NAVIGATION HEADER (z-index: 50)
+            ========================================== */}
+        <nav style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          zIndex: 50,
+          boxSizing: 'border-box',
+        }}>
+          {/* Mobile Nav Layout */}
+          <div className="flex xl:hidden" style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '18px 20px',
+            width: '100%',
+            boxSizing: 'border-box',
+          }}>
+            <a href="#explore" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+              Explore
+            </a>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <StarLogo />
+            </div>
+            <a href="#connect" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+              Connect
+            </a>
+          </div>
+
+          {/* Desktop Nav Layout */}
+          <div className="hidden xl:flex" style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '22px 48px',
+            width: '100%',
+            boxSizing: 'border-box',
+          }}>
+            <div style={{ display: 'flex', gap: '36px' }}>
+              <a href="#worlds" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+                Worlds
+              </a>
+              <a href="#atelier" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+                Atelier
+              </a>
+              <a href="#immersions" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+                Immersions
+              </a>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <StarLogo />
+            </div>
+            <div style={{ display: 'flex', gap: '36px' }}>
+              <a href="#craft" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+                Craft
+              </a>
+              <a href="#codex" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+                Codex
+              </a>
+              <a href="#connect" style={{ fontFamily: 'Imprima, sans-serif', fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', opacity: 0.9, textDecoration: 'none' }}>
+                Connect
+              </a>
+            </div>
+          </div>
+        </nav>
+
+        {/* ==========================================
+            SCENE 1 UI (z-index: 20)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 20,
+          opacity: scene1Opacity,
+          pointerEvents: scene1Opacity > 0.1 ? 'auto' : 'none',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '100%',
+        }}>
+          {/* MOBILE LAYOUT BLOCK */}
+          <div className="flex md:hidden" style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            padding: '80px 24px 100px',
+            gap: '24px',
+            opacity: uiVisible ? 0.95 : 0,
+            transform: uiVisible ? 'translateY(0)' : 'translateY(15px)',
+            transition: 'opacity 0.9s ease, transform 0.9s ease',
+            transitionDelay: '0.3s',
+          }}>
+            <h1 style={{ fontFamily: 'Viaoda Libre, serif', color: '#3b1a0a', textAlign: 'center' }}>
+              <div style={{ fontSize: 'clamp(26px, 7vw, 42px)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                FALL <span style={{ color: '#6b2e0e', fontSize: '0.8em' }}>›</span> <i>INTO</i>
+              </div>
+              <div style={{ fontSize: 'clamp(52px, 16vw, 80px)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                REVERIE
+              </div>
+            </h1>
+            <p style={{
+              fontFamily: 'Imprima, sans-serif',
+              fontSize: '15px',
+              lineHeight: 1.6,
+              color: '#5c2d0e',
+              maxWidth: '280px',
+            }}>
+              Crafting boundless digital worlds where the edge between AI, vision, and living myth dissolves.
+            </p>
+            <Scene1Card bgImage={CARD_IMAGES[0]} labelText="View Reel" isPlayCard isMobile />
+          </div>
+
+          {/* TABLET LAYOUT BLOCK */}
+          <div className="hidden md:flex xl:hidden" style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            padding: '80px 32px 96px',
+            gap: '28px',
+            opacity: uiVisible ? 0.95 : 0,
+            transform: uiVisible ? 'translateY(0)' : 'translateY(15px)',
+            transition: 'opacity 0.9s ease, transform 0.9s ease',
+            transitionDelay: '0.3s',
+          }}>
+            <h1 style={{ fontFamily: 'Viaoda Libre, serif', color: '#3b1a0a', textAlign: 'center' }}>
+              <div style={{ fontSize: 'clamp(28px, 5vw, 44px)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                FALL <span style={{ color: '#6b2e0e', fontSize: '0.8em' }}>›</span> <i>INTO</i>
+              </div>
+              <div style={{ fontSize: 'clamp(60px, 12vw, 86px)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                REVERIE
+              </div>
+            </h1>
+            <p style={{
+              fontFamily: 'Imprima, sans-serif',
+              fontSize: '16px',
+              lineHeight: 1.6,
+              color: '#5c2d0e',
+              maxWidth: '400px',
+            }}>
+              Crafting boundless digital worlds where the edge between AI, vision, and living myth dissolves.
+            </p>
+            <div style={{ display: 'flex', gap: '14px' }}>
+              <Scene1Card bgImage={CARD_IMAGES[0]} labelText="View Reel" isPlayCard />
+              <Scene1Card bgImage={CARD_IMAGES[1]} labelText="World Patrons" numberText="32" />
+              <Scene1Card bgImage={CARD_IMAGES[2]} labelText="View Reel" isPlayCard />
+            </div>
+          </div>
+
+          {/* DESKTOP LAYOUT BLOCK */}
+          <div className="hidden xl:block" style={{ position: 'absolute', inset: 0 }}>
+            {/* Heading Block */}
+            <div style={{
+              position: 'absolute',
+              top: '46%',
+              left: '60px',
+              maxWidth: '440px',
+              textAlign: 'left',
+              color: '#ffffff',
+              opacity: uiVisible ? 1 : 0,
+              transformOrigin: 'left center',
+              transform: uiVisible ? 'translateY(-50%)' : 'translateY(calc(-50% + 20px))',
+              transition: 'opacity 0.9s ease, transform 0.9s ease',
+              transitionDelay: '0.3s',
+            }}>
+              <h1 style={{
+                fontFamily: 'Viaoda Libre, serif',
+                textShadow: '0 2px 24px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.9)',
+                lineHeight: 1,
+                marginBottom: '16px',
+              }}>
+                <div style={{ fontSize: 'clamp(32px, 4.5vw, 54px)', lineHeight: 1.1, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                  FALL <span style={{ color: 'rgba(255,220,180,0.7)' }}>›</span> <i>INTO</i>
+                </div>
+                <div style={{ fontSize: 'clamp(50px, 7.5vw, 88px)', lineHeight: 0.9, letterSpacing: '-0.02em' }}>
+                  REVERIE
+                </div>
+              </h1>
+              <p style={{
+                fontFamily: 'Imprima, sans-serif',
+                fontSize: '18px',
+                lineHeight: 1.7,
+                color: 'rgba(255,245,235,0.88)',
+                maxWidth: '300px',
+                textShadow: '0 1px 12px rgba(0,0,0,0.8)',
+              }}>
+                Crafting boundless digital worlds where the edge between AI, vision, and living myth dissolves.
+              </p>
+            </div>
+
+            {/* Cards Block */}
+            <div style={{
+              position: 'absolute',
+              right: '40px',
+              top: '50%',
+              transform: uiVisible ? 'translateY(-50%)' : 'translateY(calc(-50% + 20px))',
+              opacity: uiVisible ? 1 : 0,
+              display: 'flex',
+              gap: '12px',
+              transition: 'opacity 0.9s ease, transform 0.9s ease',
+              transitionDelay: '0.55s',
+            }}>
+              <Scene1Card bgImage={CARD_IMAGES[0]} labelText="View Reel" isPlayCard isDesktop />
+              <Scene1Card bgImage={CARD_IMAGES[1]} labelText="World Patrons" numberText="32" isDesktop />
+              <Scene1Card bgImage={CARD_IMAGES[2]} labelText="View Reel" isPlayCard isDesktop />
+            </div>
+          </div>
+
+          {/* SLIDER DOTS */}
+          <div style={{
+            position: 'absolute',
+            bottom: isMobile ? '28px' : '40px',
+            left: isMobile ? '50%' : '60px',
+            transform: isMobile ? 'translateX(-50%)' : 'none',
+            display: 'flex',
+            gap: '6px',
+            opacity: uiVisible ? 1 : 0,
+            transition: 'opacity 0.9s ease',
+            transitionDelay: '0.8s',
+            zIndex: 25,
+          }}>
+            <div style={{ width: '28px', height: '4px', borderRadius: '2px', backgroundColor: 'rgba(255,255,255,0.9)' }} />
+            <div style={{ width: '14px', height: '4px', borderRadius: '2px', backgroundColor: 'rgba(255,255,255,0.35)' }} />
+            <div style={{ width: '14px', height: '4px', borderRadius: '2px', backgroundColor: 'rgba(255,255,255,0.35)' }} />
+            <div style={{ width: '14px', height: '4px', borderRadius: '2px', backgroundColor: 'rgba(255,255,255,0.35)' }} />
+          </div>
+
+          {/* SCROLL CUE (Desktop Only) */}
+          <div className="hidden xl:flex" style={{
+            position: 'absolute',
+            bottom: '36px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '8px',
+            opacity: uiVisible ? 1 : 0,
+            transition: 'opacity 0.9s ease',
+            transitionDelay: '0.9s',
+            zIndex: 25,
+          }}>
+            <span style={{ fontSize: '10px', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase' }}>DESCEND</span>
+            <div className="bob-up-animation" style={{
+              width: '34px',
+              height: '34px',
+              borderRadius: '50%',
+              border: '1.5px solid rgba(255,255,255,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                <path d="M1 1L6 6L11 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* ==========================================
+            SCENE 2 UI (z-index: 46)
+            ========================================== */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 46,
+          opacity: scene2Opacity,
+          pointerEvents: scene2Opacity > 0.1 ? 'auto' : 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          paddingTop: isMobile ? '12vh' : '15vh',
+          textAlign: 'center',
+          boxSizing: 'border-box',
+          paddingLeft: '24px',
+          paddingRight: '24px',
+        }}>
+          <h2 style={{
+            fontFamily: 'Viaoda Libre, serif',
+            fontSize: isMobile ? 'clamp(28px, 8vw, 44px)' : 'clamp(38px, 6.5vw, 78px)',
+            color: '#ffffff',
+            letterSpacing: '0.03em',
+            lineHeight: 1.05,
+            textShadow: '0 2px 20px rgba(0,0,0,0.4)',
+            textTransform: 'uppercase',
+          }}>
+            FORGE BEYOND THE REAL
+          </h2>
+          <p style={{
+            fontFamily: 'Imprima, sans-serif',
+            fontSize: isMobile ? '14px' : '20px',
+            lineHeight: 1.6,
+            letterSpacing: '-0.01em',
+            maxWidth: isMobile ? '260px' : '480px',
+            color: 'rgba(255,255,255,0.82)',
+            marginTop: isMobile ? '2vh' : '3vh',
+          }}>
+            Singular voyages to astonishing destinations, shaped for those who seek beauty beyond the ordinary and the known.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
+}

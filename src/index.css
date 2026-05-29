@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: #0a0608;
+  color: #ffffff;
+  font-family: 'Imprima', sans-serif;
+  scrollbar-gutter: stable;
+  min-height: 100vh;
+}
+
+@keyframes bobUp {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.bob-up-animation {
+  animation: bobUp 1.8s ease-in-out infinite;
+}
+
+/* Custom scrollbar rules */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0608;
+}
+::-webkit-scrollbar-thumb {
+  background: #25161c;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3d232e;
+}
