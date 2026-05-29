@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 // ==========================================
 // IMAGE ASSETS
 // ==========================================
-const WORLD_BG = "/WORLD_BG.png";
-const CURTAIN_LEFT = "/curtain_left.png";
-const CURTAIN_RIGHT = "/curtain_right.png";
-const TREE_MIDDLE = "/tree.png";
+const WORLD_BG = "/WORLD_BG.webp";
+const CURTAIN_LEFT = "/curtain_left.webp";
+const CURTAIN_RIGHT = "/curtain_right.webp";
+const TREE_MIDDLE = "/tree.webp";
 
 // ==========================================
 // ANTIQUE APP DATA ARRAYS
