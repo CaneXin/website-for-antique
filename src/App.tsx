@@ -250,7 +250,8 @@ const FESTIVALS_DATA = [
     tagline: '“Coming Together” in San Jose',
     desc: 'An annual celebration held from April 19 to May 1 to honor farmers and fisherfolk, recognizing their role in sustaining the local economy. It coincides with the Feast of St. Joseph the Worker.',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg4DaEkQO3Ntq7j4rAKXmr5huH8XiqLnnn6UXHKa6S_Jr6_O_jvjHhatqmE5r06DZMQ5oGvPuj7HaX1E_6-rkvwxuVeelza0tQIfKcYEP3Ki-E5YOcJsrqi9DlPYo6mNvy_VszMAvpIjBk/s1600/Antique-Tiringbanay-Festival.jpg',
-    history: 'The festival emphasizes community solidarity (“tiringbanay”) and resilience. Highlights include Farmers & Fisherfolk Day, motocross competitions, street dancing, pageants, and food exhibits.'
+    history: 'The festival emphasizes community solidarity (“tiringbanay”) and resilience. Highlights include Farmers & Fisherfolk Day, motocross competitions, street dancing, pageants, and food exhibits.',
+    youtubeId: 'Guj_pgRs0j8'
   },
   {
     id: 'binirayan',
@@ -258,7 +259,8 @@ const FESTIVALS_DATA = [
     tagline: '“Where They Sailed To”',
     desc: 'Antique’s premier month-long cultural celebration held every December. It commemorates the legendary arrival of the ten Bornean datus on Panay Island, honoring the origins of Panay settlement.',
     image: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Binirayan_Festival_of_Antique.jpg',
-    history: 'Features a Fluvial Parade from Pantalan Port to Malandog Beach, a reenactment of the datus landing, Pasundayag trade exhibits, street dancing, and the Malay Ati Tribe competition.'
+    history: 'Features a Fluvial Parade from Pantalan Port to Malandog Beach, a reenactment of the datus landing, Pasundayag trade exhibits, street dancing, and the Malay Ati Tribe competition.',
+    youtubeId: 'ZN0l5I8P7S8'
   },
   {
     id: 'madjaas',
@@ -266,7 +268,8 @@ const FESTIVALS_DATA = [
     tagline: 'Honoring the Sacred Peak of Culasi',
     desc: 'A week-long cultural celebration held in Culasi in late February or early March, celebrating the founding of Culasi in 1735 and paying tribute to the sacred Mt. Madja-as.',
     image: 'https://i.ytimg.com/vi/spz9Jb8_pfo/maxresdefault.jpg',
-    history: 'Reflects the mythological and historical identity of early Panay civilization. Features street dancing, historical reenactments, local beauty pageants, and product exhibitions.'
+    history: 'Reflects the mythological and historical identity of early Panay civilization. Features street dancing, historical reenactments, local beauty pageants, and product exhibitions.',
+    youtubeId: 'spz9Jb8_pfo'
   },
   {
     id: 'banigan',
@@ -274,7 +277,8 @@ const FESTIVALS_DATA = [
     tagline: 'Weaving Heritage in Libertad',
     desc: 'Held from March 14 to 16 in Libertad, this festival highlights the local handwoven “banig” mat weaving industry made from native pandan leaves.',
     image: 'https://jontotheworld.com/wp-content/uploads/2023/01/Banigan-Festival-.jpg',
-    history: 'Celebrates the craftsmanship of local mat weavers. Activities include live mat weaving demonstrations, street dancing in banig-inspired costumes, and trade exhibitions.'
+    history: 'Celebrates the craftsmanship of local mat weavers. Activities include live mat weaving demonstrations, street dancing in banig-inspired costumes, and trade exhibitions.',
+    youtubeId: 'nzeYWa9WaDI'
   },
   {
     id: 'tatusan',
@@ -282,15 +286,17 @@ const FESTIVALS_DATA = [
     tagline: 'Abundance of Caluya Islands',
     desc: 'Held from April 9 to 11 in Caluya, named after the famous “tatus” or coconut crab, celebrating the island\'s marine abundance and promoting ecological conservation.',
     image: 'https://scontent.fmnl17-3.fna.fbcdn.net/v/t39.30808-6/471048282_1818515518960596_3632436589579485277_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=MRVA2VzNT68Q7kNvwHUkiyo&_nc_oc=AdqFE9Jf0MeixeQQdNnjGw8r9Gy7x1r8QUnMX2AFxAjgKnhCvVFQmoMJryVlklXWYRc&_nc_zt=23&_nc_ht=scontent.fmnl17-3.fna&_nc_gid=F0663hkVrk7b3-IzFfK9Bg&_nc_ss=7a289&oh=00_Af7zswZkLiKc7j_QKrxlc1xjBQsvZG-nOKZsXbMLKkVLZA&oe=6A1F4DF5',
-    history: 'Raises awareness about protecting the vulnerable coconut crab. Features crab-themed street dancing, seafood fairs, float parades, and community presentations.'
+    history: 'Raises awareness about protecting the vulnerable coconut crab. Features crab-themed street dancing, seafood fairs, float parades, and community presentations.',
+    youtubeId: 'mpGhZ0-a5Xo'
   },
   {
     id: 'patuyaw',
     title: 'Patuyaw & Patnongon Festivals',
     tagline: 'Shrimps & Hospitality',
     desc: 'Celebrates Sebaste\'s abundance of freshwater shrimp (“patuyaw”) and Patnongon\'s week-long unity fiesta (February 22–26) under Saint Joseph.',
-    image: 'https://scontent.fmnl17-6.fna.fbcdn.net/v/t39.30808-6/600296633_887447097398252_1269160612354558876_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=eIr4O7YcbV0Q7kNvwFfNUpX&_nc_oc=Adp7O7P3Cwjivea4Y6-47oFaW7DXFeXhH2nDDo4CGY-3nA0oIE6b1tyqjsc4ZxAkL2k&_nc_zt=23&_nc_ht=scontent.fmnl17-6.fna&_nc_gid=omlcKQ4EfTLbkfiy5Wl3hg&_nc_ss=7a289&oh=00_Af7fgAG5jKp2QzcGC9AR3L0DBs4nUMu-Chue-wf-iMd7vw&oe=6A1F3E1D',
-    history: 'Highlights local livelihoods, farming, and agricultural achievements. Events feature street dancing, parada kang karosa (float parade), and agricultural trade displays.'
+    image: 'https://scontent.fmnl17-6.fna.fbcdn.net/v/t39.30808-6/600296633_887447097398252_1269160612354558876_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=eIr4O7YcbV0Q7kNvwFfNUpX&_nc_oc=Adp7O7P3Cwjivea4Y6-47oFaW7DXFeXhH2nDDo4CGY-3nA0oIE6b1tyqjsc4ZxAkL2k&_nc_zt=23&_nc_ht=scontent.fmnl17-6.fna&_nc_gid=omlcKQ4EfTLbkfiy5Wl3hg&_nc_ss=7a289&oh=00_Af4yeEHGd2YhqS2YDLbcVDqVDsB2gVN0pwfK2P_qq5fHiA&oe=6A1F3E1D',
+    history: 'Highlights local livelihoods, farming, and agricultural achievements. Events feature street dancing, parada kang karosa (float parade), and agricultural trade displays.',
+    youtubeId: '92pnMrHU7IQ'
   },
   {
     id: 'batabat',
@@ -306,7 +312,8 @@ const FESTIVALS_DATA = [
     tagline: 'Muscovado Sugar Renewal',
     desc: 'Celebrated in Laua-an in mid-January, named after the cleaning and preparing (“pahinis”) of tools needed for muscovado sugarcane crushing.',
     image: 'https://scontent.fmnl17-3.fna.fbcdn.net/v/t39.30808-6/597385170_887550594054569_5430833477548965257_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=Jgqt7_3Zii0Q7kNvwFr4l4p&_nc_oc=Ado5npH0qzc_maZYnpqmujwGHivKJOpG-LnfGxDTi74GEqogak69J23IeUIaOAX9TOs&_nc_zt=23&_nc_ht=scontent.fmnl17-3.fna&_nc_gid=t860HbH_GV1zXmt_fakZtw&_nc_ss=7a289&oh=00_Af4yeEHGd2YhqS2YDLbcVDqVDsB2gVN0pwfK2P_qq5fHiA&oe=6A1F5B9F',
-    history: 'Combines sugarcane harvest thanksgiving with Catholic devotions to Saint Joseph. Features traditional sugar boiling reenactments, beauty pageants, and cleansing rituals.'
+    history: 'Combines sugarcane harvest thanksgiving with Catholic devotions to Saint Joseph. Features traditional sugar boiling reenactments, beauty pageants, and cleansing rituals.',
+    youtubeId: 'IPG1rAQPaeE'
   },
   {
     id: 'maninihon',
@@ -314,7 +321,8 @@ const FESTIVALS_DATA = [
     tagline: 'The Hardworking Spirit of Tibiao',
     desc: 'Held in Tibiao from February 17 to 21, celebrating the diligence, resilience, and hardworking character of the local people.',
     image: 'https://scontent.fmnl17-2.fna.fbcdn.net/v/t39.30808-6/598449129_887530647389897_6373119461634317243_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=_Cwx0jpzeRUQ7kNvwEJZlZL&_nc_oc=Adq1CHja0BRjAy1iNkb2dSHsRqevy-nnAk45X7RJtfpCcz3oJpXPi6uGhnGJP2pqh3M&_nc_zt=23&_nc_ht=scontent.fmnl17-2.fna&_nc_gid=EN1AwUgCYez72UUt1PgEqw&_nc_ss=7a289&oh=00_Af5qPsA4ZAjkntYPXsKV6Qw2lcIQk4te7OgAFrxW53jaiw&oe=6A1F3325',
-    history: 'Refers to individuals who persevere through life\'s trials. Features street dancing depicting daily livelihoods (fishing, farming, clay crafts) and trade exhibits.'
+    history: 'Refers to individuals who persevere through life\'s trials. Features street dancing depicting daily livelihoods (fishing, farming, clay crafts) and trade exhibits.',
+    youtubeId: 'UwPbMVXZjTU'
   }
 ];
 
@@ -2306,6 +2314,29 @@ export default function App() {
                 marginBottom: '24px',
                 boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
               }} />
+
+              {/* YouTube Video Player Embed */}
+              {selectedItem.youtubeId && (
+                <div style={{
+                  width: '100%',
+                  height: '220px',
+                  borderRadius: '18px',
+                  overflow: 'hidden',
+                  marginBottom: '24px',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${selectedItem.youtubeId}`}
+                    title={`${selectedItem.title} Video`}
+                    style={{ border: 0 }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
 
               {/* Heading */}
               <h3 style={{
